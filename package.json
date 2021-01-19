@@ -7,7 +7,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "react-devtools": "react-devtools",
-    "test": "jest --watch"
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBandw"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
