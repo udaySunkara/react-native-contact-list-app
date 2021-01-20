@@ -37,7 +37,7 @@ const ContactList = () => {
             <ContactSearch></ContactSearch>
             <ContactListContainer style={styles.listContainer}></ContactListContainer>
         </View>
-        {atleastOneContactSelected ? <TouchableOpacity onPress={() => handleDelete()} style={styles.delete}>
+        {atleastOneContactSelected ? <TouchableOpacity testId="deleteContacts" onPress={() => handleDelete()} style={styles.delete}>
             <MaterialIcons name="delete" size={24} color="black" />
         </TouchableOpacity>
             : null}
