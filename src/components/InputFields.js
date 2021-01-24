@@ -4,12 +4,12 @@ import { TextInput, StyleSheet, View, Text } from 'react-native';
 
 const InputField = ({ value, placeholder, validateForm, inputRef, updateInput, fieldName, moveToNext, index, markAsDirty, contactConfig }) => {
     return <View style={styles.container}>
-        <TextInput maxFontSizeMultiplier={1.5} autoCapitalize='none' keyboardType={contactConfig[fieldName].keyboardType} ref={inputRef} style={styles.input} onEndEditing={() => { validateForm(); moveToNext(index) }} onFocus={() => markAsDirty(fieldName)} onChangeText={text => updateInput(fieldName, text)} defaultValue={value} placeholder={placeholder} />
+        <TextInput keyName={fieldName} maxFontSizeMultiplier={1.5} autoCapitalize='none' keyboardType={contactConfig[fieldName].keyboardType} ref={inputRef} style={styles.input} onEndEditing={() => { validateForm(); moveToNext(index) }} onFocus={() => markAsDirty(fieldName)} onChangeText={text => updateInput(fieldName, text)} defaultValue={value} placeholder={placeholder} />
         {contactConfig[fieldName].isTouched &&
             contactConfig[fieldName].validations &&
             Object.keys(contactConfig[fieldName].validations).map((validateKey, index) => {
                 return <>
-                    {!contactConfig[fieldName].validations[validateKey].isValid ? <Text key={`${validateKey}-${fieldName}`} style={styles.errMsg}>{contactConfig[fieldName].validations[validateKey].message}</Text> : null}
+                    {!contactConfig[fieldName].validations[validateKey].isValid ? <Text testId={`${validateKey}-${fieldName}`} key={`${validateKey}-${fieldName}`} style={styles.errMsg}>{contactConfig[fieldName].validations[validateKey].message}</Text> : null}
                 </>
             })}
     </View>

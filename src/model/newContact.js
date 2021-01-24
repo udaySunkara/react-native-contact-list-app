@@ -1,4 +1,4 @@
-const contactModel = {
+export const contactModel = () => ({
     name: {
         placeholder: 'Enter Name',
         isTouched: false,
@@ -49,6 +49,13 @@ const contactModel = {
         }
     },
     isValid: false
-};
+});
 
-export default contactModel;
+export const contactDataModel = () => ({
+    name: '',
+    company: '',
+    email: '',
+    number: '',
+    fax: '',
+    image: ''
+});

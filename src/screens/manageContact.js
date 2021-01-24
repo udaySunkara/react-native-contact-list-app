@@ -4,20 +4,13 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { createNewContact, putNewContact, editContact, updateContact } from '../store/actions/contacts.action';
 import InputField from '../components/InputFields';
-import contactModel from '../model/newContact';
+import {contactModel, contactDataModel } from '../model/newContact';
 import AvatarEditor from '../components/avatarEditor';
 
 const ManageContact = ({ navigation, route }) => {
     const contactList = useSelector(state => state.contacts.contactList || []);
-    const [newContact, setNewContact] = useState({
-        name: '',
-        company: '',
-        email: '',
-        number: '',
-        fax: '',
-        image: ''
-    });
-    const [contactConfig, setContactConfig] = useState(contactModel);
+    const [newContact, setNewContact] = useState(contactDataModel());
+    const [contactConfig, setContactConfig] = useState(contactModel());
     const InputRefList = [useRef(null), useRef(null), useRef(null), useRef(null)];
     const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const mobileNumberRegEx = /^[0-9]{10}$/g;
@@ -97,10 +90,9 @@ const ManageContact = ({ navigation, route }) => {
         navigation.setOptions({ title: route.params?.title });
         const _contact = route.params && route.params.contact;
         setIsNewContact(_contact ? false : true);
-
         if (route && _contact) {
             setNewContact(_contact);
-            const _contactModel = {...contactModel, isValid: true};
+            const _contactModel = {...contactModel(), isValid: true};
             setContactConfig(_contactModel);
         }
     }, []);
@@ -115,10 +107,10 @@ const ManageContact = ({ navigation, route }) => {
         })}
 
         {<View style={styles.btnContainer}>
-            <TouchableOpacity style={[styles.btn, styles.primaryBtn, { backgroundColor: (contactConfig.isValid ? '#1870d5' : '#cfcfcf') }]} onPress={() => { if (contactConfig.isValid) { dispatchContactUpdate(contactList, newContact); } }}>
+            <TouchableOpacity testId="saveContact" style={[styles.btn, styles.primaryBtn, { backgroundColor: (contactConfig.isValid ? '#1870d5' : '#cfcfcf') }]} onPress={() => { if (contactConfig.isValid) { dispatchContactUpdate(contactList, newContact); } }}>
                 <Text maxFontSizeMultiplier={1.5} style={[styles.primaryBtn, {backgroundColor: (contactConfig.isValid ? '#1870d5' : '#cfcfcf')}]}>Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, styles.secondaryBtn]} onPress={() => navigation.goBack()}>
+            <TouchableOpacity testId="cancelContact" style={[styles.btn, styles.secondaryBtn]} onPress={() => navigation.goBack()}>
                 <Text maxFontSizeMultiplier={1.5} style={styles.secondaryBtn}>Cancel</Text>
             </TouchableOpacity>
         </View>}
