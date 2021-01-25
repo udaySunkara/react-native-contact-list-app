@@ -34,7 +34,7 @@ const AvatarEditor = ({avatarImage, addImage}) => {
 
 
     return <View style={styles.container}>
-        {avatarImage || image ? <TouchableOpacity onPress={pickImage}><Image source={{ uri: (image || avatarImage) }} style={styles.image} /></TouchableOpacity> : <TouchableOpacity onPress={pickImage}><FontAwesome name="user-circle-o" size={120} color="black" /></TouchableOpacity>}
+        {avatarImage || image ? <TouchableOpacity testId="avatarPicker" onPress={pickImage}><Image source={{ uri: (image || avatarImage) }} style={styles.image} /></TouchableOpacity> : <TouchableOpacity testId="imgPicker" onPress={pickImage}><FontAwesome name="user-circle-o" size={120} color="black" /></TouchableOpacity>}
     </View>
 };
 

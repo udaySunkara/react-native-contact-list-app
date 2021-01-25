@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, TouchableOpacity, Text, StyleSheet, Switch, Image } from 'react-native';
-import { navigationRef } from '../utility/rootNavigation';
+import { navigate } from '../utility/rootNavigation';
 import { selectContact } from '../store/actions/contacts.action';
 
 const Contact = ({ data }) => {
     const colorCodes = ['#00AA55', '#009FD4', '#B381B3', '#939393', '#E3BC00', '#D47500', '#DC2A2A'];
-    const isEditmodeOn = useSelector(state => state.contacts.isEditable);
     const [isSelected, setSelected] = useState(false);
+    const isEditmodeOn = useSelector(state => state.contacts.isEditable);
     const dispatch = useDispatch();
 
     const getAvtarColor = (text) => {
@@ -32,10 +32,10 @@ const Contact = ({ data }) => {
 
     return <View style={styles.container}>
         {data.image ? 
-        <Image style={styles.avatarImage} source={{uri: data.image}}></Image>
+        <Image testId="avatarImage" style={styles.avatarImage} source={{uri: data.image}}></Image>
         : 
         <Text maxFontSizeMultiplier={1.3} style={{ ...styles.avatar, backgroundColor: colorCodes[getAvtarColor(data.name || '') % colorCodes.length] }}>{(data.name || '')[0]}</Text>}
-        <TouchableOpacity onPress={() => { navigationRef.current?.navigate('Manage', { title: 'Edit contact', contact: data }) }} style={styles.contactName}>
+        <TouchableOpacity testId="gotoEdit" onPress={() => { navigate('Manage', { title: 'Edit contact', contact: data }) }} style={styles.contactName}>
             <Text>{data.name}</Text>
         </TouchableOpacity>
         {isEditmodeOn ? <Switch
