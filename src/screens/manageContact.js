@@ -6,15 +6,13 @@ import { createNewContact, putNewContact, editContact, updateContact } from '../
 import InputField from '../components/InputFields';
 import {contactModel, contactDataModel } from '../model/newContact';
 import AvatarEditor from '../components/avatarEditor';
+import { NUMBER_OF_REQUOIRED_FIELDS, validateFormFields } from '../utility/validations';
 
 const ManageContact = ({ navigation, route }) => {
     const contactList = useSelector(state => state.contacts.contactList || []);
     const [newContact, setNewContact] = useState(contactDataModel());
     const [contactConfig, setContactConfig] = useState(contactModel());
     const InputRefList = [useRef(null), useRef(null), useRef(null), useRef(null)];
-    const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const mobileNumberRegEx = /^[0-9]{10}$/g;
-    const faxNumberRegEx = /^\+?[0-9]{6,}$/;
     const [isNewContact, setIsNewContact] = useState(true);
     const displatch = useDispatch();
 
@@ -51,35 +49,7 @@ const ManageContact = ({ navigation, route }) => {
 
     const validateForm = () => {
         const _contactConfig = JSON.parse(JSON.stringify(contactConfig));
-        let invalidCount = 0;
-        let numberOfReqFieldsTouched = 0;
-        let isCurrentFieldValid = false;
-        Object.keys(newContact).forEach((fieldName) => {
-            if (fieldName !== 'id' && fieldName !== 'image' && _contactConfig[fieldName].isTouched && _contactConfig[fieldName].validations) {
-                switch(fieldName) {
-                    case 'name':
-                        isCurrentFieldValid = newContact[fieldName] ? true : false
-                        _contactConfig[fieldName].validations.required.isValid = isCurrentFieldValid;
-                        break;
-                    case 'email':
-                        isCurrentFieldValid = emailRegEx.test(newContact[fieldName]);
-                        _contactConfig[fieldName].validations.email.isValid = isCurrentFieldValid;
-                        break;
-                    case 'number':
-                        isCurrentFieldValid = mobileNumberRegEx.test(newContact[fieldName]);
-                        _contactConfig[fieldName].validations.phoneNumber.isValid = isCurrentFieldValid;
-                        break;
-                    case 'fax':
-                        isCurrentFieldValid = faxNumberRegEx.test(newContact[fieldName]);
-                        _contactConfig[fieldName].validations.faxNumber.isValid = isCurrentFieldValid;
-                        break;
-                }
-                ++numberOfReqFieldsTouched;
-                if (!isCurrentFieldValid) { ++invalidCount; }
-            }
-        });
-        _contactConfig.isValid = (invalidCount === 0 && (numberOfReqFieldsTouched === 4 || contactConfig.isValid));
-        setContactConfig(_contactConfig);
+        setContactConfig(validateFormFields(newContact, _contactConfig, NUMBER_OF_REQUOIRED_FIELDS));
     }
 
     const addProfileImage = (uri) => {
