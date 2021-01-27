@@ -31,6 +31,6 @@ export const validateFormFields = (newContact, _contactConfig, numberOfRequiredF
             if (!isCurrentFieldValid) { ++invalidCount; }
         }
     });
-    _contactConfig.isValid = (invalidCount === 0 && (numberOfReqFieldsTouched === numberOfRequiredFields || contactConfig.isValid));
+    _contactConfig.isValid = (invalidCount === 0 && (numberOfReqFieldsTouched === numberOfRequiredFields || _contactConfig.isValid));
     return _contactConfig;
 }
